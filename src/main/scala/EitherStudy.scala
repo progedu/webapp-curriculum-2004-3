@@ -1,9 +1,15 @@
 object EitherStudy {
 
   sealed trait Either[+E, +A] {
-    def map[B](f: A => B): Either[E, B] = ???
+    def map[B](f: A => B): Either[E, B] = this match {
+      case Left(v) => Left(v)
+      case Right(v) => Right(f(v))
+    }
 
-    def flatMap[EE >: E, B](f: A => Either[EE, B]): Either[EE, B] = ???
+    def flatMap[EE >: E, B](f: A => Either[EE, B]): Either[EE, B] = this match {
+      case Left(v) => Left(v)
+      case Right(v) => f(v)
+    }
   }
 
   case class Left[+E](get: E) extends Either[E, Nothing]
